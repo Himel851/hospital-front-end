@@ -53,6 +53,10 @@ const Header = () => {
 
                             {auth?.role === 'superAdmin' && <> 
                             <Link href="/dashboard" className="text-dark nav-link arrow-none fw-bold" >Dashboard</Link>
+                            <Link href="/approved-doctor" className="text-dark nav-link arrow-none fw-bold" >Approved</Link>
+                            <Link href="/pending-doctor" className="text-dark nav-link arrow-none fw-bold" >Pending</Link>
+                            <Link href="/rejected-doctor" className="text-dark nav-link arrow-none fw-bold" >Rejected</Link>
+
                             </>}
 
                         </Nav>
