@@ -14,6 +14,7 @@ const SignUp = () => {
         email: '',
         password: '',
         department: "",
+        regId: "",
     });
     const [userType, setUserType] = useState('patient');
 
@@ -24,11 +25,11 @@ const SignUp = () => {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-        const { name, age, gender, phone, email, password, department } = formData;
+        const { name, age, gender, phone, email, password, department,regId  } = formData;
         // const apiEndpoint = isDoctorRegistration ? 'doctor/register' : 'patient/register';
-        const payload = { name, age, gender, phone, email, password };
+        let payload = { name, age, gender, phone, email, password };
         if (userType === "doctor") {
-            payload.department = department;
+            payload = { ...payload, department: department.toString(), regId };
         }
         try {
             console.log(userType);
@@ -57,11 +58,11 @@ const SignUp = () => {
 
     const handleDepartmentSelection = (department) => {
         setFormData((prevFormData) => ({
-          ...prevFormData,
-          department: department,
+            ...prevFormData,
+            department: department,
         }));
-      };
-      
+    };
+
 
 
     return (
@@ -144,29 +145,41 @@ const SignUp = () => {
                                 </Form.Group>
                             </div>
 
-                            {userType === "doctor" && (
+                            {userType === "doctor" && <>
+                            <Form.Group controlId="formBasicEmail" className="mb-1" md="6" lg="4">
+                                    <Form.Label>NID</Form.Label>
+                                    <Form.Control
+                                        style={{ width: '90%' }}
+                                        type="number"
+                                        placeholder="Enter nid"
+                                        name="regId" className="form-control" required
+                                        value={formData.regId}
+                                        onChange={handleInputChange}
+                                    />
+
+                                </Form.Group>
+
                                 <Form.Group controlId="formBasicDepartment" className="mb-1" md="6" lg="4">
                                     <div className="d-flex gap-3 mt-3">
-                                    <Form.Label>Department</Form.Label>
-                                    <Dropdown>
-                                        <Dropdown.Toggle variant="primary" id="department-dropdown">
-                                            {formData.department ? formData.department.departmentName : "Select Department"}
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                            {departmentOptions?.map((department) => (
-                                                <Dropdown.Item
-                                                    key={department._id}
-                                                    onClick={() => handleDepartmentSelection(department)}
-                                                >
-                                                    {department.departmentName}
-                                                </Dropdown.Item>
-                                            ))}
-                                        </Dropdown.Menu>
-                                    </Dropdown>
+                                        <Form.Label>Department</Form.Label>
+                                        <Dropdown>
+                                            <Dropdown.Toggle variant="primary" id="department-dropdown">
+                                                {formData.department ? formData.department.departmentName : "Select Department"}
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu>
+                                                {departmentOptions?.map((department) => (
+                                                    <Dropdown.Item
+                                                        key={department._id}
+                                                        onClick={() => handleDepartmentSelection(department)}
+                                                    >
+                                                        {department.departmentName}
+                                                    </Dropdown.Item>
+                                                ))}
+                                            </Dropdown.Menu>
+                                        </Dropdown>
                                     </div>
-                                </Form.Group>
-                            )}
-{/* 
+                                </Form.Group></>}
+                            {/* 
 
                             {userType === "doctor" && (
                                 <Form.Group controlId="formBasicDepartment" className="mb-1" md="6" lg="4">
