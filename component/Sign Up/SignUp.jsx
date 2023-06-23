@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Form, Button, Image, ButtonGroup } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Form, Button, Image, ButtonGroup, Dropdown } from "react-bootstrap";
 import style from './signup.module.scss'
 import axios from "axios";
 import Link from "next/link";
 
 const SignUp = () => {
-
+    const [departmentOptions, setDepartmentOptions] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
         age: '',
@@ -13,6 +13,7 @@ const SignUp = () => {
         phone: '',
         email: '',
         password: '',
+        department: "",
     });
     const [userType, setUserType] = useState('patient');
 
@@ -23,9 +24,12 @@ const SignUp = () => {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-        const { name, age, gender, phone, email, password } = formData;
+        const { name, age, gender, phone, email, password, department } = formData;
         // const apiEndpoint = isDoctorRegistration ? 'doctor/register' : 'patient/register';
         const payload = { name, age, gender, phone, email, password };
+        if (userType === "doctor") {
+            payload.department = department;
+        }
         try {
             console.log(userType);
             const response = await axios.post(`http://localhost:4023/api/v1/${userType}/register`, payload);
@@ -34,6 +38,32 @@ const SignUp = () => {
             console.error(error);
         }
     };
+
+    useEffect(() => {
+        const fetchDepartmentOptions = async () => {
+            try {
+                const response = await axios.get(
+                    "http://localhost:4023/api/v1/department/view"
+                );
+                setDepartmentOptions(response.data.data);
+                console.log(response.data.data)
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchDepartmentOptions();
+    }, []);
+
+    const handleDepartmentSelection = (department) => {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          department: department,
+        }));
+      };
+      
+
+
     return (
         <div
             className={style.signup}
@@ -62,34 +92,36 @@ const SignUp = () => {
                                 {userType === 'doctor' && <h1>Doctor Sign Up</h1>}
                                 {userType === 'patient' && <h1>Patient Sign Up</h1>}
                             </div>
-                            <Form.Group controlId="formBasicName" className="mb-1" md="6" lg="4">
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control
-                                    style={{ width: '90%' }}
-                                    type="text"
-                                    placeholder="Enter name"
-                                    name="name" className="form-control" required
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                />
-                            </Form.Group>
-
-                            <Form.Group controlId="formBasicEmail" className="mb-1" md="6" lg="4">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control
-                                    style={{ width: '90%' }}
-                                    type="email"
-                                    placeholder="Enter email"
-                                    name="email" className="form-control" required
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                />
-
-                            </Form.Group>
-
-                            <div className='d-flex middle'>
+                            <div className="d-flex gap-2">
                                 <Form.Group controlId="formBasicName" className="mb-1" md="6" lg="4">
-                                    <div className="d-flex">
+                                    <Form.Label>Name</Form.Label>
+                                    <Form.Control
+                                        style={{ width: '90%' }}
+                                        type="text"
+                                        placeholder="Enter name"
+                                        name="name" className="form-control" required
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                    />
+                                </Form.Group>
+
+                                <Form.Group controlId="formBasicEmail" className="mb-1" md="6" lg="4">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Control
+                                        style={{ width: '90%' }}
+                                        type="email"
+                                        placeholder="Enter email"
+                                        name="email" className="form-control" required
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                    />
+
+                                </Form.Group>
+                            </div>
+
+                            <div className='d-flex mt-3'>
+                                <Form.Group controlId="formBasicName" className="mb-1" md="6" lg="4">
+                                    <div className="d-flex gap-2">
                                         <Form.Label>Age</Form.Label>
                                         <Form.Control
                                             className='ageInput form-control'
@@ -100,7 +132,7 @@ const SignUp = () => {
                                             value={formData.age}
                                             onChange={handleInputChange}
                                         />
-                                        <label htmlFor="gender" className="ms-3" >Gender</label>
+                                        <label htmlFor="gender" className="ms-4" >Gender</label>
                                         <select name="gender" className="form-control ms-2" required
                                             value={formData.gender}
                                             onChange={handleInputChange} style={{ width: '100px' }}>
@@ -111,6 +143,53 @@ const SignUp = () => {
                                     </div>
                                 </Form.Group>
                             </div>
+
+                            {userType === "doctor" && (
+                                <Form.Group controlId="formBasicDepartment" className="mb-1" md="6" lg="4">
+                                    <div className="d-flex gap-3 mt-3">
+                                    <Form.Label>Department</Form.Label>
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="primary" id="department-dropdown">
+                                            {formData.department ? formData.department.departmentName : "Select Department"}
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            {departmentOptions?.map((department) => (
+                                                <Dropdown.Item
+                                                    key={department._id}
+                                                    onClick={() => handleDepartmentSelection(department)}
+                                                >
+                                                    {department.departmentName}
+                                                </Dropdown.Item>
+                                            ))}
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                    </div>
+                                </Form.Group>
+                            )}
+{/* 
+
+                            {userType === "doctor" && (
+                                <Form.Group controlId="formBasicDepartment" className="mb-1" md="6" lg="4">
+
+                                    <Form.Label>Department</Form.Label>
+                                    <Form.Control
+                                        style={{ width: "90%" }}
+                                        as="select"
+                                        name="department"
+                                        className="form-control"
+                                        required
+                                        value={formData.department}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="">Select Department</option>
+                                        {departmentOptions?.departmentName?.map((department) => (
+                                            <option key={department._id} value={department._id}>
+                                                {department.name}
+                                            </option>
+                                        ))}
+                                    </Form.Control>
+                                </Form.Group>
+                            )} */}
 
 
                             <Form.Group controlId="formBasicName" className="mb-1" md="6" lg="4">
