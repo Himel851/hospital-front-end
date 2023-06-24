@@ -30,14 +30,18 @@ const Login = () => {
             if (data.success) {
                 localStorage.setItem('auth', JSON.stringify(response.data.data));
                 setAuth(data.data); // Update the authentication state using setAuth
-                {userType === 'admin' && router.replace(`/dashboard`)};
-                {userType === 'doctor' && router.replace(`/doctor-profile`)};
-                {userType === 'patient' && router.replace(`/doctor-list`)};
+                { userType === 'admin' && router.replace(`/dashboard`) };
+                { userType === 'doctor' && router.replace(`/doctor-profile`) };
+                { userType === 'patient' && router.replace(`/doctor-list`) };
             }
         } catch (error) {
             console.error(error);
         }
     };
+
+    if (auth?.role === 'superAdmin') router.replace(`/dashboard`);
+    if (auth?.role === 'doctor') router.replace(`/doctor-profile`);
+    if (auth?.role === 'patient') router.replace(`/doctor-list`);
 
 
 
