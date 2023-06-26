@@ -31,13 +31,13 @@ const SignUp = () => {
         // const apiEndpoint = isDoctorRegistration ? 'doctor/register' : 'patient/register';
         let payload = { name, age, gender, phone, email, password };
         if (userType === "doctor") {
-            payload = { ...payload, department: department.toString(), regId };
+            payload = { ...payload, department: String(department), regId };
         }
         try {
             console.log(userType);
             const response = await axios.post(`http://localhost:4023/api/v1/${userType}/register`, payload);
             console.log(response.data); // do something with the response if needed
-            router.push('/login');
+            router.push('/');
         } catch (error) {
             console.error(error);
         }
