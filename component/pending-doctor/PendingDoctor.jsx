@@ -12,7 +12,7 @@ const PendingDoctor = () => {
 
   const fetchDoctorList = async () => {
     try {
-      const response = await axios.get('http://localhost:4023/api/v1/doctor/approved/all');
+      const response = await axios.get('http://localhost:4023/api/v1/doctor/pending/all');
       const { data } = response.data;
       setDoctorList(data);
       console.log(data)

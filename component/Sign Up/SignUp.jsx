@@ -3,9 +3,11 @@ import { Form, Button, Image, ButtonGroup, Dropdown } from "react-bootstrap";
 import style from './signup.module.scss'
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const SignUp = () => {
     const [departmentOptions, setDepartmentOptions] = useState([]);
+    const router = useRouter();
     const [formData, setFormData] = useState({
         name: '',
         age: '',
@@ -35,6 +37,7 @@ const SignUp = () => {
             console.log(userType);
             const response = await axios.post(`http://localhost:4023/api/v1/${userType}/register`, payload);
             console.log(response.data); // do something with the response if needed
+            router.push('/login');
         } catch (error) {
             console.error(error);
         }
