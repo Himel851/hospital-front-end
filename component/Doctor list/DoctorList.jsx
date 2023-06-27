@@ -26,7 +26,7 @@ const DoctorList = () => {
       axios.get(`http://localhost:4023/api/v1/doctor/view/doctor/${selectedDepartment}`)
         .then(response => {
           setDoctors(response.data.data);
-          console.log(response.data)
+          console.log(response.data.data)
         })
         .catch(error => {
           console.error('Error fetching doctors:', error);

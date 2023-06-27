@@ -4,6 +4,7 @@ import style from './signup.module.scss'
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
     const [departmentOptions, setDepartmentOptions] = useState([]);
@@ -27,19 +28,25 @@ const SignUp = () => {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-        const { name, age, gender, phone, email, password, department,regId  } = formData;
-        // const apiEndpoint = isDoctorRegistration ? 'doctor/register' : 'patient/register';
+        const { name, age, gender, phone, email, password, department, regId } = formData;
         let payload = { name, age, gender, phone, email, password };
+
+        // Extract department name from the department object
+        const departmentName = department.departmentName;
+
         if (userType === "doctor") {
-            payload = { ...payload, department: String(department), regId };
+            payload = { ...payload, department: departmentName, regId };
         }
+        console.log(payload);
         try {
             console.log(userType);
             const response = await axios.post(`http://localhost:4023/api/v1/${userType}/register`, payload);
             console.log(response.data); // do something with the response if needed
+            toast.success("Registration Successful");
             router.push('/');
         } catch (error) {
             console.error(error);
+            toast.error("Registration Error");
         }
     };
 
@@ -149,7 +156,7 @@ const SignUp = () => {
                             </div>
 
                             {userType === "doctor" && <>
-                            <Form.Group controlId="formBasicEmail" className="mb-1" md="6" lg="4">
+                                <Form.Group controlId="formBasicEmail" className="mb-1" md="6" lg="4">
                                     <Form.Label>NID</Form.Label>
                                     <Form.Control
                                         style={{ width: '90%' }}
