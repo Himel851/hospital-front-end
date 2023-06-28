@@ -79,7 +79,7 @@ const DoctorList = () => {
                     <Link href='/doctor-appointment'>
                       <Button variant="success">Get Appointment</Button>
                     </Link>
-                    <Link href='/doctor-profile'>
+                    <Link href={`/doctor-profile?id=${doctor._id}`}>
                       <Button variant="success">Profile</Button>
                     </Link>
                   </div>
