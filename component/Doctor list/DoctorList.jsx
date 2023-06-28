@@ -5,7 +5,7 @@ import { Button, Card, Col, Container, Dropdown, Row } from 'react-bootstrap'
 
 const DoctorList = () => {
   const [departments, setDepartments] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('Cardiology');
   const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const DoctorList = () => {
           <div className='d-flex justify-content-center gap-3' >
             <h4>Select Department: </h4>
             <Dropdown.Toggle variant="success" id="dropdown-basic">
-              {selectedDepartment || 'Select Department'}
+              {selectedDepartment}
             </Dropdown.Toggle>
           </div>
           <Dropdown.Menu >

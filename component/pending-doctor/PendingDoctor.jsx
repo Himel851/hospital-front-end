@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './pending.module.scss'
 import { Button, Table } from 'react-bootstrap'
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const PendingDoctor = () => {
   const [doctorList, setDoctorList] = useState([]);
@@ -29,9 +30,11 @@ const PendingDoctor = () => {
         console.log(message);
         // Refresh the doctor list
         fetchDoctorList();
+        toast.success('Doctor approve successful......');
       }
     } catch (error) {
       console.error('Error approving doctor:', error);
+      toast.error('Doctor approve failed......');
     }
   };
 
@@ -43,9 +46,11 @@ const PendingDoctor = () => {
         console.log(message);
         // Refresh the doctor list
         fetchDoctorList();
+        toast.success('Doctor Rejected successful......');
       }
     } catch (error) {
       console.error('Error rejecting doctor:', error);
+      toast.error('Doctor rejected failed......');
     }
   };
   
