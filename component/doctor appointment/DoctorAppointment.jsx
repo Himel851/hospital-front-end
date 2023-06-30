@@ -9,7 +9,7 @@ const DoctorAppointment = () => {
 
     const inputStyle = {
         marginBottom: '1rem',
-      };
+    };
 
 
     return (
@@ -18,13 +18,13 @@ const DoctorAppointment = () => {
                 <h1>Doctor Appointment</h1>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formName">
-                        <Form.Label>Name</Form.Label>
+                        <Form.Label>Patient Id</Form.Label>
                         <Form.Control style={inputStyle} type="text" placeholder="Enter your name" />
                     </Form.Group>
 
                     <Form.Group controlId="formEmail">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control style={inputStyle} type="email" placeholder="Enter your email" />
+                        <Form.Label>Patient Name</Form.Label>
+                        <Form.Control style={inputStyle} type="text" placeholder="Enter your email" />
                     </Form.Group>
 
                     <Form.Group controlId="formDate">
@@ -43,7 +43,7 @@ const DoctorAppointment = () => {
                 </Form>
             </Container>
         </div>
-        
+
 
     );
 };

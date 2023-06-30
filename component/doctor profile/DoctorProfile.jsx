@@ -1,8 +1,37 @@
 import Image from 'next/image'
-import React from 'react'
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
+import { toast } from 'react-toastify';
+import { useAuth } from '../../context/auth';
 
 const DoctorProfile = () => {
+    const [profile, setProfile] = useState({});
+    const [auth, setAuth] = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        const fetchInvoiceData = async () => {
+          try {
+            const config = {
+              method: "post",
+              maxBodyLength: Infinity,
+              url: 'http://localhost:4023/api/v1/doctor/update-profile',
+              headers: {
+                Authorization: auth?.token,
+              },
+            };
+      
+            const response = await axios(config);
+            setProfile(response?.data);
+            console.log(response?.data)
+          } catch (error) {
+            toast.error("Something went wrong");
+          }
+        };
+      
+        fetchInvoiceData();
+      }, [router.query.id]);
     return (
         <div style={{ marginTop: '4rem' }}>
             <Container>
