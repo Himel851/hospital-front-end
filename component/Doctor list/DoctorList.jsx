@@ -76,7 +76,7 @@ const DoctorList = () => {
                     <b>Degree-</b> {doctor.degree}
                   </Card.Text>
                   <div className='d-flex gap-3'>
-                    <Link href='/doctor-appointment'>
+                    <Link href={`/doctor-appointment/${doctor._id}`}>
                       <Button variant="success">Get Appointment</Button>
                     </Link>
                     <Link href={`/doctor-profile/${doctor._id}`}>
