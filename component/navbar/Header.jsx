@@ -13,8 +13,8 @@ const Header = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('auth'); // Remove the authentication data from local storage
-        setAuth(null); // Reset the authentication state
         router.push('/');
+        setAuth(null); // Reset the authentication state
     }
     console.log(auth?.role)
 

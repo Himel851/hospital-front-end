@@ -32,9 +32,9 @@ const Login = () => {
             if (data.success) {
                 localStorage.setItem('auth', JSON.stringify(response.data.data));
                 setAuth(data.data); // Update the authentication state using setAuth
-                console.log(auth)
+                console.log(data.data)
                 { userType === 'admin' && router.replace(`/dashboard`) };
-                { userType === 'doctor' && router.replace(`/doctor-profile`) };
+                { userType === 'doctor' && router.replace(`/doctor-profile/${data?.data?._id}`) };
                 { userType === 'patient' && router.replace(`/doctor-list`) };
             }
         } catch (error) {

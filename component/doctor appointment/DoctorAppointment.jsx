@@ -38,16 +38,15 @@ const DoctorAppointment = () => {
         try {
             // Make an API request to create an appointment using Axios
             const response = await axios.post('http://localhost:4023/api/v1/appointment/create', appointmentData);
-            toast.success('Appointment created successfully');
-            if (response.status === 200) {
                 const appointment = response.data;
                 console.log('Appointment created:', appointment);
-                // Do something with the created appointment data, e.g., show a success message
-            }
-            
+                toast.success('Appointment created successfully');
+                router.push('/doctor-list');
+
         } catch (error) {
             console.error('Error creating appointment:', error);
-            toast.error('Appointment creation failed');
+            // toast.error('Appointment creation failed');
+
             // Handle any network or other errors
         }
     };
@@ -103,7 +102,7 @@ const DoctorAppointment = () => {
                     <div className='d-flex gap-4'>
                         <Form.Group controlId="formName">
                             <Form.Label>Slot</Form.Label>
-                            <Form.Control style={inputStyle} name='slot' type="text" placeholder=" time" value={appointmentData.slot}
+                            <Form.Control style={inputStyle} name='slot' type="date" placeholder=" time" value={appointmentData.slot}
                                 onChange={handleInputChange} />
                         </Form.Group>
 
