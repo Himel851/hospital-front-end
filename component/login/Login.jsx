@@ -7,6 +7,7 @@ import style from './login.module.scss'
 import { useRouter } from "next/router";
 import { useAuth } from "../../context/auth";
 import Header from "../navbar/Header";
+import { toast } from "react-toastify";
 
 
 
@@ -27,28 +28,24 @@ const Login = () => {
                 password,
             });
             const data = response.data;
+            toast.success("Login Successful");
             if (data.success) {
                 localStorage.setItem('auth', JSON.stringify(response.data.data));
                 setAuth(data.data); // Update the authentication state using setAuth
+                console.log(auth)
                 { userType === 'admin' && router.replace(`/dashboard`) };
                 { userType === 'doctor' && router.replace(`/doctor-profile`) };
                 { userType === 'patient' && router.replace(`/doctor-list`) };
             }
         } catch (error) {
             console.error(error);
+            toast.error("Login Failed");
         }
     };
-
-    if (auth?.role === 'superAdmin') router.replace(`/dashboard`);
-    if (auth?.role === 'doctor') router.replace(`/doctor-profile`);
-    if (auth?.role === 'patient') router.replace(`/doctor-list`);
-
 
 
     return (
         <div>
-            {router.pathname !== '/' && <Header />}
-
             <div
                 className={style.patientLogin}
                 style={{

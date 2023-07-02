@@ -3,17 +3,21 @@ import React, { useEffect, useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import { useAuth } from '../../context/auth';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 const DoctorAppointment = () => {
     const [auth, setAuth] = useAuth();
     const router = useRouter();
+
+    const authData = JSON.parse(localStorage.getItem('auth'));
+    console.log(authData._id);
     const [appointmentData, setAppointmentData] = useState({
         patientName: '',
-        patientId: auth?._id.toString(),
+        patientId: authData._id,
         patientAge: null,
         patientGender: '',
         patientPhone: '',
-        doctorId: router.query.id.toString(), // Set doctor ID as a string using router.query.id.toString(),
+        doctorId: router.query.id, // Set doctor ID as a string using router.query.id.toString(),
         slot: '',
         reason: '',
     });
@@ -34,17 +38,16 @@ const DoctorAppointment = () => {
         try {
             // Make an API request to create an appointment using Axios
             const response = await axios.post('http://localhost:4023/api/v1/appointment/create', appointmentData);
-
+            toast.success('Appointment created successfully');
             if (response.status === 200) {
                 const appointment = response.data;
                 console.log('Appointment created:', appointment);
                 // Do something with the created appointment data, e.g., show a success message
-            } else {
-                console.log('Appointment creation failed');
-                // Handle the error case, e.g., show an error message
             }
+            
         } catch (error) {
             console.error('Error creating appointment:', error);
+            toast.error('Appointment creation failed');
             // Handle any network or other errors
         }
     };

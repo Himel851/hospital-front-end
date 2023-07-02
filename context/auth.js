@@ -16,11 +16,11 @@ const AuthProvider = ({ children }) => {
       const parseData = JSON.parse(data);
       setAuth({
         ...auth,
-        email: parseData.email,
-        token: parseData.token,
-        name: parseData.name,
-        role: parseData.role,
-        _id: parseData._id,
+        email: parseData?.email,
+        token: parseData?.token,
+        name: parseData?.name,
+        role: parseData?.role,
+        _id: parseData?._id,
       });
     }
   }, []);
