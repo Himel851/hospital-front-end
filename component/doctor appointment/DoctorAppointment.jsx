@@ -1,15 +1,19 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
+import { useAuth } from '../../context/auth';
+import { useRouter } from 'next/router';
 
 const DoctorAppointment = () => {
+    const [auth, setAuth] = useAuth();
+    const router = useRouter();
     const [appointmentData, setAppointmentData] = useState({
         patientName: '',
-        patientId: '',
+        patientId: auth?._id.toString(),
         patientAge: null,
         patientGender: '',
         patientPhone: '',
-        doctorId: '',
+        doctorId: router.query.id.toString(), // Set doctor ID as a string using router.query.id.toString(),
         slot: '',
         reason: '',
     });
@@ -44,6 +48,12 @@ const DoctorAppointment = () => {
             // Handle any network or other errors
         }
     };
+
+    useEffect(() => {
+        // Call the createAppointment function when the component mounts
+        createAppointment(appointmentData);
+        createAppointment();
+    }, [router.query.id]);
 
     const inputStyle = {
         marginBottom: '1rem',

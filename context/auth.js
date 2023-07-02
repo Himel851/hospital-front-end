@@ -6,9 +6,9 @@ const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     email: "",
     token: "",
+    name: "",
     role: "",
-    user_type: "",
-    id: "",
+     _id: "",
   });
   useEffect(() => {
     const data = localStorage.getItem("auth");
@@ -18,9 +18,9 @@ const AuthProvider = ({ children }) => {
         ...auth,
         email: parseData.email,
         token: parseData.token,
+        name: parseData.name,
         role: parseData.role,
-        user_type: parseData.user_type,
-        id: parseData.id,
+        _id: parseData._id,
       });
     }
   }, []);

@@ -77,7 +77,7 @@ const DoctorList = () => {
                   </Card.Text>
                   <div className='d-flex gap-3'>
                     <Link href={`/doctor-appointment/${doctor._id}`}>
-                      <Button variant="success">Get Appointment</Button>
+                      <Button variant="success">Get Appointment </Button>
                     </Link>
                     <Link href={`/doctor-profile/${doctor._id}`}>
                       <Button variant="success">Profile</Button>

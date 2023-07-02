@@ -40,7 +40,6 @@ const DoctorProfile = () => {
                         <Image src="/image/doctor1.jpg" alt="Picture of the author" width={400} height={300} />
                         <div className='d-flex justify-content-center'>
                             <Button variant="success" className='mt-4'>Get Appointment</Button>
-
                         </div>
 
                     </Col>
