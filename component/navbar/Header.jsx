@@ -47,8 +47,8 @@ const Header = () => {
                             </>}
 
                             {auth?.role === 'doctor' && <>
-                                <Link href="/appointment-list" className="text-dark nav-link arrow-none fw-bold" >Appointment List</Link>
-                                <Link href="/doctor-profile" className="text-dark nav-link arrow-none fw-bold" >Profile</Link>
+                                <Link href={`/appointment-list/${auth?._id}`} className="text-dark nav-link arrow-none fw-bold" >Appointment List</Link>
+                                <Link href={`/doctor-profile/${auth?._id}`} className="text-dark nav-link arrow-none fw-bold" >Profile</Link>
                             </>}
 
                             {auth?.role === 'superAdmin' && <> 
