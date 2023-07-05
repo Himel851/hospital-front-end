@@ -25,7 +25,12 @@ const EditProfile = () => {
 
     const fetchProfileData = async () => {
         try {
-            const response = await axios.post('http://localhost:4023/api/v1/doctor/update-profile');
+            const response = await axios.post('http://localhost:4023/api/v1/doctor/update-profile',
+                {
+                    headers: {
+                        Authorization: auth?.token,
+                    }
+                });
             setProfile(response.data);
         } catch (error) {
             console.log('Error fetching profile data:', error);
@@ -42,12 +47,29 @@ const EditProfile = () => {
     };
 
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setProfile((prevProfile) => ({
-            ...prevProfile,
-            [name]: value
-        }));
+        const { name, value, files } = event.target;
+        if (name === 'profileImage') {
+            const file = files[0];
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                setProfile((prevProfile) => ({
+                    ...prevProfile,
+                    [name]: reader.result
+                }));
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        } else {
+            setProfile((prevProfile) => ({
+                ...prevProfile,
+                [name]: value
+            }));
+        }
     };
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -58,7 +80,7 @@ const EditProfile = () => {
     return (
         <div style={{ margin: '5rem 40vh' }}>
             <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="name">
+                <Form.Group controlId="name" className='d-flex gap-3 '>
                     <Form.Label>Name</Form.Label>
                     <Form.Control
                         type="text"
@@ -68,7 +90,70 @@ const EditProfile = () => {
                     />
                 </Form.Group>
 
-                <Form.Group controlId="department">
+                {/* <Form.Group controlId="phone">
+                    <Form.Label>Phone</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="phone"
+                        value={profile.phone}
+                        onChange={handleInputChange}
+                    />
+                </Form.Group> */}
+
+                <Form.Group controlId="profileImage" className='d-flex gap-3 mt-3'>
+                    <Form.Label>Profile Image</Form.Label>
+                    <input
+                        type="file"
+                        name="profileImage"
+                        onChange={handleInputChange}
+                    />
+                </Form.Group>
+                {profile.profileImage && (
+                    <img src={profile.profileImage} alt="Profile" style={{ width: '200px', marginTop: '10px' }} />
+                )}
+
+
+                <Form.Group controlId="specialty" className='d-flex gap-3 mt-3'>
+                    <Form.Label>Specialty</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="specialty"
+                        value={profile.specialty}
+                        onChange={handleInputChange}
+                    />
+                </Form.Group>
+
+                <Form.Group controlId="education" className='d-flex gap-3 mt-3'>
+                    <Form.Label>Education</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="education"
+                        value={profile.education}
+                        onChange={handleInputChange}
+                    />
+                </Form.Group>
+
+                <Form.Group controlId="experience" className='d-flex gap-3 mt-3'>
+                    <Form.Label>Experience</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="experience"
+                        value={profile.experience}
+                        onChange={handleInputChange}
+                    />
+                </Form.Group>
+
+                <Form.Group controlId="address" className='d-flex gap-3 mt-3'>
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="address"
+                        value={profile.address}
+                        onChange={handleInputChange}
+                    />
+                </Form.Group>
+
+                <Form.Group controlId="department" className='d-flex gap-3 mt-3'>
                     <Form.Label>Department</Form.Label>
                     <Form.Control
                         as="select"
@@ -84,6 +169,21 @@ const EditProfile = () => {
                         ))}
                     </Form.Control>
                 </Form.Group>
+
+
+                <Form.Group controlId="shortDescription" className='d-flex gap-3 mt-3'>
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                        name="shortDescription"
+                        value={profile.shortDescription}
+                        onChange={handleInputChange}
+                    />
+                </Form.Group>
+
+
+
 
                 {/* Add more form fields for other profile properties */}
 
