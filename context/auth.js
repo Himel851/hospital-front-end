@@ -9,6 +9,9 @@ const AuthProvider = ({ children }) => {
     name: "",
     role: "",
      _id: "",
+     age: "",
+     phone: "",
+     gender: "",
   });
   useEffect(() => {
     const data = localStorage.getItem("auth");
@@ -21,6 +24,8 @@ const AuthProvider = ({ children }) => {
         name: parseData?.name,
         role: parseData?.role,
         _id: parseData?._id,
+        phone: parseData?.phone,
+        gender: parseData?.gender,
       });
     }
   }, []);

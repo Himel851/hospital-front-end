@@ -43,7 +43,6 @@ const Header = () => {
                         >
                             {auth?.role === 'patient' && <>
                                 <Link href="/doctor-list" className="text-dark nav-link arrow-none fw-bold" >Doctor's List</Link>
-                                <Link href="/patient-profile" className="text-dark nav-link arrow-none fw-bold" >Profile</Link>
                             </>}
 
                             {auth?.role === 'doctor' && <>
@@ -60,12 +59,15 @@ const Header = () => {
                             </>}
 
                         </Nav>
-                        <div className="d-flex">
+                        <div className="d-flex gap-4">
                             {/* <Link href="/dashboard">
                                 <Button variant="success" className="me-2">
                                     Dashboard
                                 </Button>
                             </Link> */}
+                             {auth?.role === 'patient' && <>
+                                <Link href="/patient-profile" className="text-dark nav-link arrow-none fw-bold mt-1" >My Profile</Link>
+                            </>}
                             <Button variant="danger" onClick={handleLogout}>Logout</Button>
                         </div>
                     </Navbar.Collapse>

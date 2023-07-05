@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link'
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Container, Dropdown, Row } from 'react-bootstrap'
 
@@ -7,6 +8,8 @@ const DoctorList = () => {
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState('Cardiology');
   const [doctors, setDoctors] = useState([]);
+  const router = useRouter();
+
 
   useEffect(() => {
     // Fetch the department data from your API endpoint
@@ -40,7 +43,9 @@ const DoctorList = () => {
     console.log('Selected department:', department);
   };
 
-
+  const handleProfileClick = (doctorId) => {
+    router.push(`/doctor-profile/${doctorId}`);
+  };
 
 
   return (
@@ -65,7 +70,7 @@ const DoctorList = () => {
 
       <Container>
         <Row>
-          {doctors.map(doctor => (
+          {doctors.length > 0 ? <> {doctors.map(doctor => (
             <Col xl={3} md={6} sm={12} className='mt-3' key={doctor._id}>
               <Card style={{ width: '18rem' }}>
                 <Card.Img variant="top" src="/image/doctor1.jpg" />
@@ -79,34 +84,20 @@ const DoctorList = () => {
                     <Link href={`/doctor-appointment/${doctor._id}`}>
                       <Button variant="success">Get Appointment </Button>
                     </Link>
-                    <Link href={`/doctor-profile/${doctor._id}`}>
+                    {/* <Link href={`/doctor-profile/${doctor._id}`}>
                       <Button variant="success">Profile</Button>
-                    </Link>
+                    </Link> */}
+                    <div className='d-flex gap-3'>
+                      <Button variant="success" onClick={() => handleProfileClick(doctor._id)}>Profile</Button>
+                    </div>
                   </div>
                 </Card.Body>
               </Card>
             </Col>
-          ))}
-          {/* <Col xl={3} md={6} sm={12} className='mt-3'>
-            <Card style={{ width: '18rem' }}>
-              <Card.Img variant="top" src="/image/doctor1.jpg" />
-              <Card.Body>
-                <Card.Title>Lorem Lorem</Card.Title>
-                <Card.Text>
-                  <b>Speciality -</b> Consultant,ENt, Head and Neck Surgery <br />
-                  <b>Degree-</b> MBBS, FCPS(ENT)
-                </Card.Text>
-                <div className='d-flex gap-3'>
-                  <Link href='/doctor-appointment' >
-                    <Button variant="success">Get Appointment</Button>
-                  </Link>
-                  <Link href='/doctor-profile' >
-                    <Button variant="success">Profile</Button>
-                  </Link>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col> */}
+          ))}</> :
+            <>
+              <h1 className='text-center'>No Doctors Found</h1>
+            </>}
         </Row>
 
       </Container>

@@ -4,44 +4,49 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import { toast } from 'react-toastify';
 import { useAuth } from '../../context/auth';
+import Link from 'next/link';
+import axios from 'axios';
 
 const DoctorProfile = () => {
-  const [profile, setProfile] = useState({});
   const [auth, setAuth] = useAuth();
   const router = useRouter();
-  console.log(auth?.role);
+  const { doctorId } = router.query;
+  const [doctor, setDoctor] = useState({});
+  console.log(doctorId);
 
   useEffect(() => {
-    const fetchInvoiceData = async () => {
-      try {
-        const config = {
-          method: "post",
-          maxBodyLength: Infinity,
-          url: 'http://localhost:4023/api/v1/doctor/update-profile',
-          headers: {
-            Authorization: auth?.token,
-          },
-        };
+    if (doctorId) {
+      // Fetch the doctor's details based on the doctorId
+      axios.get(`http://localhost:4023/api/v1/doctor/view-profile/${doctorId}`)
+        .then(response => {
+          setDoctor(response.data);
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching doctor details:', error);
+        });
+    }
+  }, [doctorId]);
 
-        const response = await axios(config);
-        setProfile(response?.data);
-        console.log(response?.data)
-      } catch (error) {
-        // toast.error("Something went wrong");
-      }
-    };
 
-    fetchInvoiceData();
-  }, [router.query.id]);
   return (
     <div style={{ marginTop: '4rem' }}>
       <Container>
         <Row className='pt-5'>
           <Col xl={4} md={6}  >
             <Image src="/image/doctor1.jpg" alt="Picture of the author" width={400} height={300} />
+            {/* <div className='d-flex gap-3'>
+              <Link href={`/doctor-appointment/${doctor._id}`}>
+                <Button variant="success">Get Appointment </Button>
+              </Link>
+            </div> */}
             {auth?.role === 'doctor' && <div className='d-flex justify-content-center'>
-              <Button variant="success" className='mt-4'>Edit Profile</Button>
-            </div>}
+              <Link href="/edit-profile">
+                <Button variant="success" className='mt-4'>Edit Profile</Button>
+              </Link>
+            </div>
+
+            }
 
           </Col>
           <Col xl={8} md={6}  >
@@ -56,7 +61,7 @@ const DoctorProfile = () => {
           </Col>
         </Row>
       </Container>
-    </div>
+    </div >
   )
 }
 
