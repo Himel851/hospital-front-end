@@ -43,6 +43,7 @@ const Header = () => {
                         >
                             {auth?.role === 'patient' && <>
                                 <Link href="/doctor-list" className="text-dark nav-link arrow-none fw-bold" >Doctor's List</Link>
+                                <Link href="/my-appointment" className="text-dark nav-link arrow-none fw-bold" >My Appointment</Link>
                             </>}
 
                             {auth?.role === 'doctor' && <>
