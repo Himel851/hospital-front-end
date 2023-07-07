@@ -17,7 +17,8 @@ const EditProfile = () => {
         education: '',
         experience: '',
         address: '',
-        shortDescription: ''
+        shortDescription: '',
+        city: '',
     });
     const [auth, setAuth] = useAuth();
     const [departments, setDepartments] = useState([]);
@@ -34,11 +35,15 @@ const EditProfile = () => {
     const fetchProfileData = async () => {
         try {
             const response = await axios.get(`http://localhost:4023/api/v1/doctor/view-profile/${id}`);
-            setProfile(response.data?.data);
+            const { _id, ...profileData } = response.data?.data; // Destructure the response data and exclude the _id field
+            setProfile({ ...profileData, id: _id }); // Set the id field separately
+            console.log(profileData);
         } catch (error) {
             console.log('Error fetching profile data:', error);
         }
     };
+
+
 
     const fetchDepartments = async () => {
         try {
@@ -79,16 +84,10 @@ const EditProfile = () => {
     };
 
     const updateProfile = async () => {
-        console.log(profile);
         try {
+            console.log(profile);
             const response = await axios.post(`http://localhost:4023/api/v1/doctor/update-profile`,
-            profile,
-            {
-                headers: {
-                  Authorization: auth?._id,
-                },
-              });
-            console.log('Updated profile:', response.data?.data);
+                profile);
             toast.success("Update Successful");
             router.push(`/doctor-profile/${id}`);
             // You can show a success message or redirect to the doctor's profile page
@@ -100,25 +99,28 @@ const EditProfile = () => {
     return (
         <div style={{ margin: '5rem 40vh' }}>
             <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="name" className='d-flex gap-3 '>
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="name"
-                        value={profile.name}
-                        onChange={handleInputChange}
-                    />
-                </Form.Group>
 
-                {/* <Form.Group controlId="phone">
-                    <Form.Label>Phone</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="phone"
-                        value={profile.phone}
-                        onChange={handleInputChange}
-                    />
-                </Form.Group> */}
+                <div className='d-flex  gap-4'>
+                    <Form.Group controlId="name" className='d-flex gap-3 '>
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="name"
+                            value={profile.name}
+                            onChange={handleInputChange}
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="phone" className='d-flex gap-3 '>
+                        <Form.Label>Phone</Form.Label>
+                        <Form.Control
+                            type="phone"
+                            name="phone"
+                            value={profile.phone}
+                            onChange={handleInputChange}
+                        />
+                    </Form.Group>
+                </div>
+
 
                 <Form.Group controlId="profileImage" className='d-flex gap-3 mt-3'>
                     <Form.Label>Profile Image</Form.Label>

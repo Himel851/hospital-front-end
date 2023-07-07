@@ -65,10 +65,11 @@ const DoctorProfile = () => {
           <Col xl={8} md={6}  >
             <p><b>Gender -</b> {doctor?.gender} </p>
             <p><b>Age -</b> {doctor?.age} </p>
+            <p> <b>Address -</b> {doctor?.address} </p>
             <p><b>Department -</b> {doctor?.department}</p>
             <p> <b>Education -</b> {doctor?.education}</p>
+            <p> <b>Experience  -</b> {doctor?.experience} </p>
             <p> <b>Address -</b> {doctor?.address} </p>
-            <p> <b>City -</b> {doctor?.city} </p>
             <p> <b>Speciality -</b>{doctor?.specialty} </p>
             <p> <b>Short Description -</b> {doctor?.shortDescription} </p>
 

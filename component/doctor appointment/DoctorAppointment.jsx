@@ -77,7 +77,7 @@ const EditProfilePage = () => {
           onChange={handleInputChange}
         >
           <option value="">Select department</option>
-          {departments?.map((department) => (
+          {departments?.data?.map((department) => (
             <option key={department.id} value={department.name}>
               {department.name}
             </option>
