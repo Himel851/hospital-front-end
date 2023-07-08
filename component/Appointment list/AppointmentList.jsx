@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container, Table } from "react-bootstrap";
-import { Check, X } from "react-bootstrap-icons";
 import { useAuth } from "../../context/auth";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function AppointmentList() {
   const [auth, setAuth] = useAuth();
@@ -32,10 +32,10 @@ export default function AppointmentList() {
         `http://localhost:4023/api/v1/admin/approve/doctor/${doctorId}`
       );
       const { success, message } = response.data;
+      console.log(success)
       if (success) {
         console.log(message);
         // Refresh the doctor list
-        fetchDoctorList();
         toast.success("Doctor approve successful......");
       }
     } catch (error) {
@@ -53,7 +53,6 @@ export default function AppointmentList() {
       if (success) {
         console.log(message);
         // Refresh the doctor list
-        fetchDoctorList();
         toast.success("Doctor Rejected successful......");
       }
     } catch (error) {
@@ -99,13 +98,13 @@ export default function AppointmentList() {
                 <div className="d-flex gap-2">
                   <Button
                     variant="success"
-                    onClick={() => handleApprove(doctor._id)}
+                    onClick={() => handleApprove(item._id)}
                   >
                     Approve
                   </Button>
                   <Button
                     variant="danger"
-                    onClick={() => handleReject(doctor._id)}
+                    onClick={() => handleReject(item._id)}
                   >
                     Reject
                   </Button>
