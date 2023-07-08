@@ -31,6 +31,9 @@ const MyAppointment = () => {
                 <thead>
                     <tr>
                         <th>
+                            <strong>No</strong>
+                        </th>
+                        <th>
                             <strong>Patient Name</strong>
                         </th>
                         <th>
@@ -52,29 +55,38 @@ const MyAppointment = () => {
                 </thead>
                 <tbody>
                     {
-                        list?.data?.map((item) => (
+                        (list?.data?.slice()?.reverse() || []).map((item, index) => (
                             <tr key={item?._id}>
+                                <td>{index + 1}</td>
                                 <td>{item?.patientName}</td>
                                 <td>{item?.patientGender}</td>
                                 <td>{item?.patientAge}</td>
                                 <td>{item?.slot}</td>
                                 <td>{item?.reason}</td>
                                 <td>
-                                    {item?.isApprovedByDoctor ? <>
-                                        <h3>Approved</h3>
-                                    </> : <>
-                                        {item?.isRejectedByDoctor ? <>
-                                            <h3>Rejected</h3>
-
-                                        </> : <>
-                                            <h3>Pending</h3>
-                                        </>}
-                                    </>}
+                                    {item?.isApprovedByDoctor ? (
+                                        <>
+                                            <h3>Approved</h3>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {item?.isRejectedByDoctor ? (
+                                                <>
+                                                    <h3>Rejected</h3>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <h3>Pending</h3>
+                                                </>
+                                            )}
+                                        </>
+                                    )}
                                 </td>
                             </tr>
                         ))
                     }
                 </tbody>
+
             </Table>
         </div>
     )

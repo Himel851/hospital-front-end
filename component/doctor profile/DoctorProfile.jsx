@@ -44,6 +44,9 @@ const DoctorProfile = () => {
             <h3> {doctor?.name}</h3>
             <p><b>Phone -</b> {doctor?.phone} </p>
             <p><b>Email -</b> {doctor?.email} </p>
+            {auth?.role=== 'patient' && <Link href={`/doctor-appointment/${doctor._id}`}>
+                      <Button variant="success">Get Appointment </Button>
+                    </Link>}
 
 
 

@@ -67,6 +67,9 @@ export default function AppointmentList() {
         <thead>
           <tr>
             <th>
+              <strong>No</strong>
+            </th>
+            <th>
               <strong>Patient Name</strong>
             </th>
             <th>
@@ -87,8 +90,9 @@ export default function AppointmentList() {
           </tr>
         </thead>
         <tbody>
-          {list?.map((item) => (
+          {(list?.slice()?.reverse() || []).map((item, index) => (
             <tr key={item?._id}>
+              <td>{index + 1}</td>
               <td>{item?.patientName}</td>
               <td>{item?.patientGender}</td>
               <td>{item?.patientAge}</td>
