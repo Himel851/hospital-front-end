@@ -29,7 +29,7 @@ export default function AppointmentList() {
   const handleApprove = async (doctorId) => {
     try {
       const response = await axios.get(
-        `http://localhost:4023/api/v1/admin/approve/doctor/${doctorId}`
+        `http://localhost:4023/api/v1/appointment/approve/${doctorId}`
       );
       const { success, message } = response.data;
       console.log(success)
@@ -47,7 +47,7 @@ export default function AppointmentList() {
   const handleReject = async (doctorId) => {
     try {
       const response = await axios.get(
-        `http://localhost:4023/api/v1/admin/reject/doctor/${doctorId}`
+        `http://localhost:4023/api/v1/appointment/reject/${doctorId}`
       );
       const { success, message } = response.data;
       if (success) {
@@ -99,20 +99,28 @@ export default function AppointmentList() {
               <td>{item?.slot}</td>
               <td>{item?.reason}</td>
               <td>
-                <div className="d-flex gap-2">
-                  <Button
-                    variant="success"
-                    onClick={() => handleApprove(item._id)}
-                  >
-                    Approve
-                  </Button>
-                  <Button
-                    variant="danger"
-                    onClick={() => handleReject(item._id)}
-                  >
-                    Reject
-                  </Button>
-                </div>
+                {item?.isApprovedByDoctor ? <>
+                  <h4>Approved</h4></> : <>
+                  {
+                    item?.isRejectedByDoctor ? <>Rejected</> : <>
+                      <div className="d-flex gap-2">
+                        <Button
+                          variant="success"
+                          onClick={() => handleApprove(item._id)}
+                        >
+                          Approve
+                        </Button>
+                        <Button
+                          variant="danger"
+                          onClick={() => handleReject(item._id)}
+                        >
+                          Reject
+                        </Button>
+                      </div>
+                    </>
+                  }
+                </>}
+
               </td>
             </tr>
           ))}

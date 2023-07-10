@@ -1,19 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { GiCherish } from 'react-icons/gi';
 import { FaAccessibleIcon, FaAmbulance, FaUserTie } from 'react-icons/fa';
 import { FiUsers } from 'react-icons/fi';
 import { MdPersonPin } from 'react-icons/md';
 import { TbBed } from "react-icons/tb";
+import axios from 'axios';
 
 const Admin = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetchDoctorList();
+  }, []);
+
+  const fetchDoctorList = async () => {
+    try {
+      const response = await axios.get('http://localhost:4023/api/v1/admin/dashboard');
+      const { data } = response.data;
+      setData(data);
+      console.log(data)
+    } catch (error) {
+      console.error('Error fetching doctor list:', error);
+    }
+  };
+
   return (
     <Container>
       <Row style={{ marginTop: '4rem' }} className="justify-content-center align-items-center" >
         <Col className="my-2" xl={4} sm={12}>
           <Card className="p-3 text-center">
             <div>
-              <GiCherish
+              <FiUsers
                 style={{
                   fontSize: '3rem',
                   color: '#22577E',
@@ -23,15 +40,13 @@ const Admin = () => {
                 }}
               />
             </div>
-            <Card.Text className="fw-bold">128</Card.Text>
-            <Card.Text>Doctors</Card.Text>
-            <Card.Text>3 doctors joined today</Card.Text>
+            <Card.Text>Total Patient {data?.patientNo}</Card.Text>
           </Card>
         </Col>
         <Col className="my-2" xl={4} sm={12}>
           <Card className="p-3 text-center">
             <div>
-              <FaAccessibleIcon
+              <FiUsers
                 style={{
                   fontSize: '3rem',
                   color: '#125B50',
@@ -41,9 +56,9 @@ const Admin = () => {
                 }}
               />
             </div>
-            <Card.Text className="fw-bold">155K</Card.Text>
-            <Card.Text>Patients</Card.Text>
-            <Card.Text>122 new patients admitted</Card.Text>
+            <Card.Text>Total Doctor {data?.doctorNo}</Card.Text>
+
+
           </Card>
         </Col>
         <Col className="my-2" xl={4} sm={12}>
@@ -59,15 +74,14 @@ const Admin = () => {
                 }}
               />
             </div>
-            <Card.Text className="fw-bold">452</Card.Text>
-            <Card.Text>Staff</Card.Text>
-            <Card.Text>12 staff members on vacation</Card.Text>
+            <Card.Text className='mt-2'>Total Departments {data?.totalDepartments}</Card.Text>
+
           </Card>
         </Col>
         <Col className="my-2" xl={4} sm={12}>
           <Card className="p-3 text-center">
             <div>
-              <TbBed 
+              <FiUsers 
                 style={{
                   fontSize: '3rem',
                   color: '#251fd8',
@@ -77,15 +91,14 @@ const Admin = () => {
                 }}
               />
             </div>
-            <Card.Text className="fw-bold">142</Card.Text>
-            <Card.Text>Beds</Card.Text>
-            <Card.Text>10 beds remaining usable</Card.Text>
+            <Card.Text>Total Approved Doctor {data?.approvedDoctorNo}</Card.Text>
+
           </Card>
         </Col>
         <Col className="my-2" xl={4} sm={12}>
           <Card className="p-3 text-center">
             <div>
-              <FaAmbulance 
+              <FiUsers 
                 style={{
                   fontSize: '3rem',
                   color: '#bc3821',
@@ -95,15 +108,14 @@ const Admin = () => {
                 }}
               />
             </div>
-            <Card.Text className="fw-bold">120</Card.Text>
-            <Card.Text>Ambulance</Card.Text>
-            <Card.Text>19 Ambulance in service</Card.Text>
+            <Card.Text>Total Rejected Doctor {data?.rejectedDoctorNo}</Card.Text>
+
           </Card>
         </Col>
         <Col className="my-2" xl={4} sm={12}>
           <Card className="p-3 text-center">
             <div>
-              <MdPersonPin
+              <FiUsers
                 style={{
                   fontSize: '3rem',
                   color: '#7B1EA2',
@@ -113,13 +125,13 @@ const Admin = () => {
                 }}
               />
             </div>
-            <Card.Text className="fw-bold">12</Card.Text>
-            <Card.Text>Representatives</Card.Text>
-            <Card.Text>6 representatives are active</Card.Text>
+            <Card.Text>Total Pending Doctor {data?.pendingDoctorNo}</Card.Text>
+
           </Card>
         </Col>
       </Row>
     </Container>
+
 
   );
 };
