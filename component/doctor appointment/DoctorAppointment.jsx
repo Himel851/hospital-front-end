@@ -29,7 +29,7 @@ const DoctorAppointment = () => {
     // Handle form submission logic here
     createAppointment(appointmentData);
   };
-  
+
   // Function to handle appointment creation
   const createAppointment = async (appointmentData) => {
     try {
@@ -39,18 +39,18 @@ const DoctorAppointment = () => {
       toast.success('Appointment created successfully');
       router.push('/doctor-list');
 
-      
+
     } catch (error) {
       console.error('Error creating appointment:', error);
       // Handle any network or other errors
     }
   };
-  
+
   useEffect(() => {
     // Call the createAppointment function when the component mounts
     createAppointment(appointmentData);
   }, [router.query.id]);
-  
+
 
   const inputStyle = {
     marginBottom: '1rem',
