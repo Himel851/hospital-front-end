@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../context/auth';
 import { useRouter } from 'next/router';
-import { Table } from 'react-bootstrap';
+import { Button, Table } from 'react-bootstrap';
 
 const MyAppointment = () => {
     const [auth, setAuth] = useAuth();
@@ -16,7 +16,7 @@ const MyAppointment = () => {
             try {
 
                 const response = await axios.get(`http://localhost:4023/api/v1/appointment/view/patient/${auth?._id}`);
-                setList(response?.data?.data?.data);
+                setList(response?.data);
                 console.log(response?.data)
             } catch (error) {
                 // toast.error("Something went wrong");
@@ -24,12 +24,15 @@ const MyAppointment = () => {
         };
 
         fetchInvoiceData();
-    }, []);
+    }, [router.query.id]);
     return (
         <div style={{ marginTop: '4rem', padding: '30px' }}>
             <Table responsive striped bordered hover>
                 <thead>
                     <tr>
+                        <th>
+                            <strong>No</strong>
+                        </th>
                         <th>
                             <strong>Patient Name</strong>
                         </th>
@@ -52,23 +55,38 @@ const MyAppointment = () => {
                 </thead>
                 <tbody>
                     {
-                        list?.map((item) => (
+                        (list?.data?.slice()?.reverse() || []).map((item, index) => (
                             <tr key={item?._id}>
+                                <td>{index + 1}</td>
                                 <td>{item?.patientName}</td>
                                 <td>{item?.patientGender}</td>
                                 <td>{item?.patientAge}</td>
                                 <td>{item?.slot}</td>
                                 <td>{item?.reason}</td>
                                 <td>
-                                    <div className='d-flex gap-2'>
-                                        <Button variant="success" onClick={() => handleApprove(doctor._id)}>Approve</Button>
-                                        <Button variant="danger" onClick={() => handleReject(doctor._id)}>Reject</Button>
-                                    </div>
+                                    {item?.isApprovedByDoctor ? (
+                                        <>
+                                            <h3>Approved</h3>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {item?.isRejectedByDoctor ? (
+                                                <>
+                                                    <h3>Rejected</h3>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <h3>Pending</h3>
+                                                </>
+                                            )}
+                                        </>
+                                    )}
                                 </td>
                             </tr>
                         ))
                     }
                 </tbody>
+
             </Table>
         </div>
     )

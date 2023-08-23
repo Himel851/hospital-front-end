@@ -73,12 +73,13 @@ const DoctorList = () => {
           {doctors.length > 0 ? <> {doctors.map(doctor => (
             <Col xl={3} md={6} sm={12} className='mt-3' key={doctor._id}>
               <Card style={{ width: '18rem' }}>
-                <Card.Img variant="top" src="/image/doctor1.jpg" />
+              <Card.Img variant="top" src={doctor?.profileImage || "/image/no-photo.png"} />
+
                 <Card.Body>
-                  <Card.Title>{doctor.name}</Card.Title>
+                  <Card.Title>{doctor?.name}</Card.Title>
                   <Card.Text>
-                    <b>Speciality -</b> {doctor.speciality} <br />
-                    <b>Degree-</b> {doctor.degree}
+                    <b>Description -</b> {doctor?.shortDescription} <br />
+                    <b>Experience-</b> {doctor?.experience}
                   </Card.Text>
                   <div className='d-flex gap-3'>
                     <Link href={`/doctor-appointment/${doctor._id}`}>

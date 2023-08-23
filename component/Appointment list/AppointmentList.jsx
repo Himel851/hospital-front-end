@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container, Table } from "react-bootstrap";
-import { Check, X } from "react-bootstrap-icons";
 import { useAuth } from "../../context/auth";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function AppointmentList() {
   const [auth, setAuth] = useAuth();
@@ -29,13 +29,13 @@ export default function AppointmentList() {
   const handleApprove = async (doctorId) => {
     try {
       const response = await axios.get(
-        `http://localhost:4023/api/v1/admin/approve/doctor/${doctorId}`
+        `http://localhost:4023/api/v1/appointment/approve/${doctorId}`
       );
       const { success, message } = response.data;
+      console.log(success)
       if (success) {
         console.log(message);
         // Refresh the doctor list
-        fetchDoctorList();
         toast.success("Doctor approve successful......");
       }
     } catch (error) {
@@ -47,13 +47,12 @@ export default function AppointmentList() {
   const handleReject = async (doctorId) => {
     try {
       const response = await axios.get(
-        `http://localhost:4023/api/v1/admin/reject/doctor/${doctorId}`
+        `http://localhost:4023/api/v1/appointment/reject/${doctorId}`
       );
       const { success, message } = response.data;
       if (success) {
         console.log(message);
         // Refresh the doctor list
-        fetchDoctorList();
         toast.success("Doctor Rejected successful......");
       }
     } catch (error) {
@@ -67,6 +66,9 @@ export default function AppointmentList() {
       <Table responsive striped bordered hover>
         <thead>
           <tr>
+            <th>
+              <strong>No</strong>
+            </th>
             <th>
               <strong>Patient Name</strong>
             </th>
@@ -88,28 +90,37 @@ export default function AppointmentList() {
           </tr>
         </thead>
         <tbody>
-          {list?.map((item) => (
+          {(list?.slice()?.reverse() || []).map((item, index) => (
             <tr key={item?._id}>
+              <td>{index + 1}</td>
               <td>{item?.patientName}</td>
               <td>{item?.patientGender}</td>
               <td>{item?.patientAge}</td>
               <td>{item?.slot}</td>
               <td>{item?.reason}</td>
               <td>
-                <div className="d-flex gap-2">
-                  <Button
-                    variant="success"
-                    onClick={() => handleApprove(doctor._id)}
-                  >
-                    Approve
-                  </Button>
-                  <Button
-                    variant="danger"
-                    onClick={() => handleReject(doctor._id)}
-                  >
-                    Reject
-                  </Button>
-                </div>
+                {item?.isApprovedByDoctor ? <>
+                  <h4>Approved</h4></> : <>
+                  {
+                    item?.isRejectedByDoctor ? <>Rejected</> : <>
+                      <div className="d-flex gap-2">
+                        <Button
+                          variant="success"
+                          onClick={() => handleApprove(item._id)}
+                        >
+                          Approve
+                        </Button>
+                        <Button
+                          variant="danger"
+                          onClick={() => handleReject(item._id)}
+                        >
+                          Reject
+                        </Button>
+                      </div>
+                    </>
+                  }
+                </>}
+
               </td>
             </tr>
           ))}
